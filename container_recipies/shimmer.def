@@ -1,0 +1,31 @@
+Bootstrap: docker
+From: ubuntu:20.04
+Stage: spython-base
+
+%post
+export DEBIAN_FRONTEND=noninteractive
+
+apt-get update && apt-get install -y git perl r-base samtools bcftools
+
+# Copy content from host to container
+git clone --recursive https://github.com/nhansen/Shimmer /shimmer
+
+perl -MCPAN -e 'CPAN::Shell->install("Module::Build")'
+
+# Install R statmod
+R -e "install.packages(c('statmod'),dependencies=TRUE, repos = 'http://cran.rstudio.com/')"
+
+# Install Shimmer
+cd /shimmer && perl /shimmer/Build.PL --install_base /shimmer
+/shimmer/Build
+/shimmer/Build install
+
+PATH="${PATH}:/shimmer/bin"
+PERL5LIB="/shimmer/bin/lib/perl5:${PERL5LIB}"
+%environment
+export PATH="${PATH}:/shimmer/bin"
+export PERL5LIB="/shimmer/bin/lib/perl5:${PERL5LIB}"
+%runscript
+exec /bin/bash "$@"
+%startscript
+exec /bin/bash "$@"

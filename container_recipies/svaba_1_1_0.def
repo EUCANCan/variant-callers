@@ -1,0 +1,17 @@
+Bootstrap: docker
+From: ubuntu:20.04
+Stage: spython-base
+
+%post
+
+export DEBIAN_FRONTEND=noninteractive
+
+apt-get update && apt-get install -y git g++ zlib1g-dev cmake libbz2-dev liblzma-dev tabix bcftools
+
+git clone --recursive https://github.com/walaj/svaba
+cd svaba && git checkout e384f5c53913744d2baf822a199dc20ba0d0a4c6 && ./configure && make -j$(nproc) && make -j$(nproc) install
+PATH=$PATH:/svaba/bin
+%runscript
+exec /bin/bash "$@"
+%startscript
+exec /bin/bash "$@"

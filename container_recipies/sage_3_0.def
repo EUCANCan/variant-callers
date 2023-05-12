@@ -1,0 +1,17 @@
+Bootstrap: docker
+From: adoptopenjdk/openjdk11:jdk-11.0.8_10-ubuntu
+Stage: spython-base
+
+%post
+
+export DEBIAN_FRONTEND=noninteractive
+
+apt-get update && apt-get install -y wget samtools
+
+wget https://github.com/hartwigmedical/hmftools/releases/download/sage-v3.0/sage_v3.0_rc3.jar
+
+
+%runscript
+exec /bin/bash "$@"
+%startscript
+exec /bin/bash "$@"

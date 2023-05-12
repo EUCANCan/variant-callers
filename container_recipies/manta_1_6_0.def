@@ -1,0 +1,17 @@
+Bootstrap: docker
+From: ubuntu:20.04
+Stage: spython-base
+
+%post
+
+export DEBIAN_FRONTEND=noninteractive
+
+apt-get update && apt-get install -y wget bzip2 gcc g++ make python2 zlib1g-dev
+
+wget https://github.com/Illumina/manta/releases/download/v1.6.0/manta-1.6.0.centos6_x86_64.tar.bz2
+tar -xjf manta-1.6.0.centos6_x86_64.tar.bz2
+
+%runscript
+exec /bin/bash "$@"
+%startscript
+exec /bin/bash "$@"

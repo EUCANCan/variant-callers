@@ -1,8 +1,6 @@
 #!/bin/bash
-module load singularity/3.7.3
-module load bcftools/1.15.1
 
-# Does not work with CRAM
+# WARNING: Does not work with CRAM
 
 mkdir $WORKING_DIR/shimmer
 
@@ -20,7 +18,6 @@ else
     shimmer.pl --ref $FASTA_REF --region {} --outdir $WORKING_DIR/shimmer/partial_{} $NORMAL_SAMPLE $TUMOR_SAMPLE
 fi
 '
-"
 
 for chrom in $(cut -f1 $FASTA_REF.fai)
 do
@@ -29,6 +26,7 @@ do
 done
 
 bcftools concat $WORKING_DIR/shimmer/partial_*/somatic_diffs.vcf.gz --threads $NUM_CORES -a -O z -o $WORKING_DIR/shimmer/shimmer.vcf.gz
+"
 
 cp $WORKING_DIR/shimmer/shimmer.vcf.gz $OUTPUT_DIR/shimmer.vcf.gz
 
