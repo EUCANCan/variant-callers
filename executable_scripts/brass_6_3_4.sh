@@ -10,7 +10,7 @@ brass.pl -o $WORKING_DIR/brass_6_3_4/all.vcf \
  -cytoband $EXTRA_DATA_DIR/brass/cytoband.txt \
  -ss $EXTRA_DATA_DIR/brass/dummy_ascat.txt \
  -microbe $EXTRA_DATA_DIR/brass/all_ncbi_bacteria \
- -gcbins $EXTRA_DATA_DIR/brass/$REF_VERSION/gcBins.bed \
+ -gcbins $EXTRA_DATA_DIR/brass/$REF_VERSION/gcBins.bed.gz \
  -species human -assembly $REF_VERSION -protocol WGS -pl Illumina \
  -normal $NORMAL_SAMPLE -tumour $TUMOR_SAMPLE -g $FASTA_REF -c $NUM_CORES
 "

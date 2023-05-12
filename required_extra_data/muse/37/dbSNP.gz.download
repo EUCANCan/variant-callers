@@ -1,0 +1,2 @@
+wget https://ftp.ncbi.nih.gov/snp/redesign/latest_release/VCF/GCF_000001405.25.gz -O dbSNP.gz
+wget https://ftp.ncbi.nih.gov/snp/redesign/latest_release/VCF/GCF_000001405.25.gz.tbi -O dbSNP.gz.tbi

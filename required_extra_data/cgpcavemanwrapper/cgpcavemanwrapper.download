@@ -1,0 +1,23 @@
+wget -r ftp://ftp.sanger.ac.uk/pub/cancer/support-files/CPIB/caveman/cgpCaVEManWrapper_CPBI_refarea.tar.gz -O cgpCaVEManWrapper_CPBI_refarea.tar.gz
+
+tar -xzf cgpCaVEManWrapper_CPBI_refarea.tar.gz
+
+rm cgpCaVEManWrapper_CPBI_refarea.tar.gz
+
+mkdir -p unmatched
+mkdir -p flagging
+
+mv cgpCaVEManWrapper_CPBI_refarea/unmatchedNormal.bed.gz unmatched/
+mv cgpCaVEManWrapper_CPBI_refarea/unmatchedNormal.bed.gz.tbi unmatched/
+
+mv cgpCaVEManWrapper_CPBI_refarea/centromeric_repeats.bed.gz flagging/
+mv cgpCaVEManWrapper_CPBI_refarea/centromeric_repeats.bed.gz.tbi flagging/
+mv cgpCaVEManWrapper_CPBI_refarea/hi_seq_depth.bed.gz flagging/
+mv cgpCaVEManWrapper_CPBI_refarea/simple_repeats.bed.gz.tbi flagging/
+mv cgpCaVEManWrapper_CPBI_refarea/simple_repeats.bed.gz flagging/
+mv cgpCaVEManWrapper_CPBI_refarea/snps.bed.gz.tbi flagging/
+mv cgpCaVEManWrapper_CPBI_refarea/snps.bed.gz flagging/
+
+mv cgpCaVEManWrapper_CPBI_refarea/flag.to.vcf.convert.ini ./
+
+rm -rf cgpCaVEManWrapper_CPBI_refarea

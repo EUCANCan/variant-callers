@@ -1,0 +1,12 @@
+wget -r ftp://ftp.sanger.ac.uk/pub/cancer/support-files/CPIB/cgpPindel/cgpPindel_CPBI_refarea.tar.gz -O cgpPindel_CPBI_refarea.tar.gz
+
+tar -xzf cgpPindel_CPBI_refarea.tar.gz
+
+rm cgpPindel_CPBI_refarea.tar.gz
+
+cp -r refarea/* .
+
+rm genome.fa
+rm genome.fa.fai
+
+rm -rf refarea

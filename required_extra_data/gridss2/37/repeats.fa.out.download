@@ -1,0 +1,1 @@
+wget https://hgdownload.cse.ucsc.edu/goldenpath/hg19/bigZips/hg19.fa.out.gz -O repeats.fa.out.gz

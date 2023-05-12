@@ -1,0 +1,15 @@
+curl -sSL ftp://ftp.ncbi.nih.gov/genomes/archive/old_refseq/Bacteria/all.fna.tar.gz | tar -zvx -O > all_bacteria.fa
+
+wget https://raw.githubusercontent.com/cancerit/BRASS/master/perl/bin/utils/brassSplitFasta.pl
+chmod u+x brassSplitFasta.pl
+mkdir -p out
+./brassSplitFasta.pl all_bacteria.fa out/
+
+wget http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/faToTwoBit
+chmod u+x faToTwoBit
+./faToTwoBit -noMask out/all_ncbi_bacteria.1.fa all_ncbi_bacteria.1.fa.2bit
+./faToTwoBit -noMask out/all_ncbi_bacteria.2.fa all_ncbi_bacteria.2.fa.2bit
+./faToTwoBit -noMask out/all_ncbi_bacteria.3.fa all_ncbi_bacteria.3.fa.2bit
+./faToTwoBit -noMask out/all_ncbi_bacteria.4.fa all_ncbi_bacteria.4.fa.2bit
+
+rm -rf out
