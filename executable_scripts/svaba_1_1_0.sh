@@ -1,7 +1,4 @@
 #!/bin/bash
-module load bcftools/1.15.1
-module load htslib/1.15.1
-
 mkdir $WORKING_DIR/svaba_1_1_0
 
 singularity exec -e $SINGULARITY_DIR/svaba_1_1_0.sif sh -c "

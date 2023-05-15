@@ -1,7 +1,4 @@
 #!/bin/bash
-module load bcftools/1.15.1
-module load samtools
-
 mkdir $WORKING_DIR/delly_1_1_6
 
 singularity exec -e $SINGULARITY_DIR/delly_1_1_6.sif sh -c "

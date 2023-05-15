@@ -14,7 +14,8 @@ The scripts for running the variant callers are Bash scripts that can be execute
   - [Example of execution](#example-of-execution)
 - [Useful information](#useful-information)
   - [Building a Singularity image from a recipe](#building-a-singularity-image-from-a-recipe)
-  - [Converting a Docker image to a Singularity image](#converting-a-docker-image-to-a-singularity-image)
+  - [Building a Docker image from a Dockerfile in a repository](#building-a-docker-image-from-a-dockerfile-in-a-repository)
+    - [Converting a Docker image to a Singularity image](#converting-a-docker-image-to-a-singularity-image)
 
 
 ## Variant callers list
@@ -99,7 +100,17 @@ To build a Singularity image from a recipe, you can use the following command (i
 sudo singularity build <image_name>.sif <recipe_file>
 ```
 
-### Converting a Docker image to a Singularity image
+### Building a Docker image from a Dockerfile in a repository
+
+To build a Docker image from a Dockerfile in a repository, you can use the following command:
+
+```bash
+git clone <repository_url>
+cd <repository_name>
+docker build -t <image_name>:<image_tag> .
+```
+
+#### Converting a Docker image to a Singularity image
 
 To convert a Docker image to a Singularity image, you first must save the Docker image to a file:
 
