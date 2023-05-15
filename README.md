@@ -1,6 +1,6 @@
 # PLATFORM NAME - Variant callers<!-- omit in toc -->
 
-This repository contains the scripts to run the variant callers used in PLATFORM NAME. The variant callers are executed from Bash scripts that use Singularity containers (sometimes it might be necessary to convert the Docker containers to Singularity containers, see [Converting from Docker to Singularity](#converting-from-docker-to-singularity)).
+This repository contains the scripts to run the variant callers used in PLATFORM NAME. The variant callers are executed from Bash scripts that use Singularity containers (sometimes it might be necessary to convert the Docker containers to Singularity containers, see [Useful information](#useful-information)). The scripts are located in the [`executable_scripts/`](executable_scripts/) folder of this repository.
 
 The containers references are available in the [variant caller list](#variant-callers-list) below. Some of the containers recipies are available in this repository, while others are available in external repositories. For the latter, the link to the repository is provided.
 
@@ -11,8 +11,10 @@ The scripts for running the variant callers are Bash scripts that can be execute
 - [Executing the variant callers](#executing-the-variant-callers)
   - [Environment variables](#environment-variables)
   - [Extra data](#extra-data)
+  - [Example of execution](#example-of-execution)
 - [Useful information](#useful-information)
-  - [Converting from Docker to Singularity](#converting-from-docker-to-singularity)
+  - [Building a Singularity image from a recipe](#building-a-singularity-image-from-a-recipe)
+  - [Converting a Docker image to a Singularity image](#converting-a-docker-image-to-a-singularity-image)
 
 
 ## Variant callers list
@@ -68,9 +70,36 @@ export EXTRA_DATA_DIR=required_extra_data
 
 _Note: Due to size limitations, some files are not available in this repository and need to be downloaded from external sources. For these cases, a file with the same name but ending with `.download` will be present instead. This file contains the instructions and links to download the file._
 
+### Example of execution
+
+The following example shows how to execute any of the variant callers:
+
+```bash
+export WORKING_DIR=/path/to/working/directory
+export OUTPUT_DIR=/path/to/output/directory
+export EXECUTABLE_DIR=./singularity_containers
+export EXTRA_DATA_DIR=./required_extra_data
+export REF_VERSION=37
+export NORMAL_SAMPLE=/path/to/normal/sample.bam
+export TUMOR_SAMPLE=/path/to/tumor/sample.bam
+export FASTA_REF=/path/to/reference.fasta
+export NUM_CORES=8
+export MAX_MEMORY=32
+
+bash ./executable_scripts/variant_caller_X_X_X.sh
+```
+
 ## Useful information
 
-### Converting from Docker to Singularity
+### Building a Singularity image from a recipe
+
+To build a Singularity image from a recipe, you can use the following command (it requires root privileges):
+
+```bash
+sudo singularity build <image_name>.sif <recipe_file>
+```
+
+### Converting a Docker image to a Singularity image
 
 To convert a Docker image to a Singularity image, you first must save the Docker image to a file:
 
