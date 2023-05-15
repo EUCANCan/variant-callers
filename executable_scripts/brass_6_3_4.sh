@@ -1,7 +1,26 @@
 #!/bin/bash
 mkdir $WORKING_DIR/brass_6_3_4
 
-singularity exec -e $EXECUTABLE_DIR/brass_6_3_4.sif sh -c "
+# Link normal and tumor samples to the working directory
+ln -s $NORMAL_SAMPLE $WORKING_DIR/brass_6_3_4/normal.bam
+ln -s $TUMOR_SAMPLE $WORKING_DIR/brass_6_3_4/tumor.bam
+# Link the .bam.bas files to the working directory if they exist
+if [ -f $NORMAL_SAMPLE.bas ]; then
+    ln -s $NORMAL_SAMPLE.bas $WORKING_DIR/brass_6_3_4/normal.bam.bas
+fi
+if [ -f $TUMOR_SAMPLE.bas ]; then
+    ln -s $TUMOR_SAMPLE.bas $WORKING_DIR/brass_6_3_4/tumor.bam.bas
+fi
+
+singularity exec -e $EXECUTABLE_DIR/brass_6_3_4.sif bash -c "
+# Create the .bam.bas files if they do not exist
+if [ ! -f $WORKING_DIR/brass_6_3_4/normal.bam.bas ]; then
+    bam_stats -@ $NUM_CORES -i $WORKING_DIR/brass_6_3_4/normal.bam -o $WORKING_DIR/brass_6_3_4/normal.bam.bas
+fi
+if [ ! -f $WORKING_DIR/brass_6_3_4/tumor.bam.bas ]; then
+    bam_stats -@ $NUM_CORES -i $WORKING_DIR/brass_6_3_4/tumor.bam -o $WORKING_DIR/brass_6_3_4/tumor.bam.bas
+fi
+
 brass.pl -o $WORKING_DIR/brass_6_3_4/all.vcf \
  -d $EXTRA_DATA_DIR/brass/$REF_VERSION/hiSeqDepth.bed \
  -vi $EXTRA_DATA_DIR/brass/viral.genomic.merged.fa.2bit \
@@ -12,7 +31,8 @@ brass.pl -o $WORKING_DIR/brass_6_3_4/all.vcf \
  -microbe $EXTRA_DATA_DIR/brass/all_ncbi_bacteria \
  -gcbins $EXTRA_DATA_DIR/brass/$REF_VERSION/gcBins.bed.gz \
  -species human -assembly $REF_VERSION -protocol WGS -pl Illumina \
- -normal $NORMAL_SAMPLE -tumour $TUMOR_SAMPLE -g $FASTA_REF -c $NUM_CORES
+ -normal $WORKING_DIR/brass_6_3_4/normal.bam -tumour $WORKING_DIR/brass_6_3_4/tumor.bam \
+ -g $FASTA_REF -c $NUM_CORES
 "
 
 # Copy the result
