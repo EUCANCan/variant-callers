@@ -1,0 +1,22 @@
+Bootstrap: docker
+From: ubuntu:22.04
+Stage: spython-base
+
+%post
+
+export DEBIAN_FRONTEND=noninteractive
+
+apt-get update && apt-get install -y wget samtools bcftools
+
+wget https://github.com/dellytools/delly/releases/download/v1.1.6/delly_v1.1.6_linux_x86_64bit
+mkdir /delly
+mv delly_v1.1.6_linux_x86_64bit /delly/delly
+chmod +x /delly/delly
+
+%environment
+    PATH=$PATH:/delly
+
+%runscript
+exec /bin/bash "$@"
+%startscript
+exec /bin/bash "$@"

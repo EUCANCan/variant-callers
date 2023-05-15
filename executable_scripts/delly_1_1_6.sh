@@ -36,20 +36,18 @@ else
     delly call -x $EXTRA_DATA_DIR/delly/$REF_VERSION/human.excl.tsv -o $WORKING_DIR/delly_1_1_6/delly_1_1_6_INS.bcf -t INS -g $FASTA_REF $TUMOR_SAMPLE $NORMAL_SAMPLE &
 fi
 wait
-"
 
 bcftools concat $WORKING_DIR/delly_1_1_6/delly_1_1_6_DEL.bcf $WORKING_DIR/delly_1_1_6/delly_1_1_6_INS.bcf $WORKING_DIR/delly_1_1_6/delly_1_1_6_DUP.bcf $WORKING_DIR/delly_1_1_6/delly_1_1_6_INV.bcf $WORKING_DIR/delly_1_1_6/delly_1_1_6_BND.bcf --threads $NUM_CORES -a -O b -o $WORKING_DIR/delly_1_1_6/delly_1_1_6_unfiltered.bcf
 bcftools index $WORKING_DIR/delly_1_1_6/delly_1_1_6_unfiltered.bcf
 
 # Get sample names from bam files
-samtools view -H $NORMAL_SAMPLE | grep '^@RG' | sed "s/.*SM:\([^\t]*\).*/\1/g" | uniq > $WORKING_DIR/delly_1_1_6/normal_sample.txt
-samtools view -H $TUMOR_SAMPLE | grep '^@RG' | sed "s/.*SM:\([^\t]*\).*/\1/g" | uniq > $WORKING_DIR/delly_1_1_6/tumor_sample.txt
+samtools view -H $NORMAL_SAMPLE | grep '^@RG' | sed 's/.*SM:\([^\t]*\).*/\1/g' | uniq > $WORKING_DIR/delly_1_1_6/normal_sample.txt
+samtools view -H $TUMOR_SAMPLE | grep '^@RG' | sed 's/.*SM:\([^\t]*\).*/\1/g' | uniq > $WORKING_DIR/delly_1_1_6/tumor_sample.txt
 
 # Create samples.tsv file with normal and tumor samples tab separated
 paste $WORKING_DIR/delly_1_1_6/normal_sample.txt <(echo $'control') > $WORKING_DIR/delly_1_1_6/samples.tsv
 paste $WORKING_DIR/delly_1_1_6/tumor_sample.txt <(echo $'tumor') >> $WORKING_DIR/delly_1_1_6/samples.tsv
 
-singularity exec -e $EXECUTABLE_DIR/delly_1_1_6.sif sh -c "
 delly filter -f somatic -o $WORKING_DIR/delly_1_1_6/delly_1_1_6.bcf -s $WORKING_DIR/delly_1_1_6/samples.tsv $WORKING_DIR/delly_1_1_6/delly_1_1_6_unfiltered.bcf
 "
 
