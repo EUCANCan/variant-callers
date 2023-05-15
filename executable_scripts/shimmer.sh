@@ -8,7 +8,7 @@ mkdir $WORKING_DIR/shimmer
 set -e
 
 # Run in parallel
-singularity exec -e $EXECUTABLE_DIR/shimmer.sif bash -c "
+singularity exec -e $SINGULARITY_DIR/shimmer.sif bash -c "
 set -e
 cut -f1 $FASTA_REF.fai | xargs -n 1 -P $NUM_CORES -I {} bash -c '
 if [ -s  $WORKING_DIR/shimmer/partial_{}/somatic_diffs.vcf.gz ]; then

@@ -4,7 +4,7 @@ module load samtools
 
 mkdir $WORKING_DIR/delly_1_1_6
 
-singularity exec -e $EXECUTABLE_DIR/delly_1_1_6.sif sh -c "
+singularity exec -e $SINGULARITY_DIR/delly_1_1_6.sif sh -c "
 if [ -s  $WORKING_DIR/delly_1_1_6/delly_1_1_6_DEL.bcf.csi ]; then
     echo Skipping DEL
 else

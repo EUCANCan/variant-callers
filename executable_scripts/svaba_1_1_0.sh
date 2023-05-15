@@ -4,7 +4,7 @@ module load htslib/1.15.1
 
 mkdir $WORKING_DIR/svaba_1_1_0
 
-singularity exec -e $EXECUTABLE_DIR/svaba_1_1_0.sif sh -c "
+singularity exec -e $SINGULARITY_DIR/svaba_1_1_0.sif sh -c "
 /svaba/bin/svaba run --override-reference-check -t $TUMOR_SAMPLE -n $NORMAL_SAMPLE -G $FASTA_REF -p $NUM_CORES -a $WORKING_DIR/svaba_1_1_0/svaba
 
 # Compress in order to concat

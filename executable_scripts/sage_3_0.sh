@@ -3,7 +3,7 @@ mkdir $WORKING_DIR/sage_3_0
 
 JAVA_OPTS="-Xms4G -Xmx"$MAX_MEMORY"G"
 
-singularity exec -e $EXECUTABLE_DIR/sage_3_0.sif bash -c "
+singularity exec -e $SINGULARITY_DIR/sage_3_0.sif bash -c "
 # Get sample name from normal and tumor files
 samtools view -H $NORMAL_SAMPLE | grep '^@RG' | sed 's/.*SM:\([^\t]*\).*/\1/g' | uniq > $WORKING_DIR/sage_3_0/normal_sample.txt
 samtools view -H $TUMOR_SAMPLE | grep '^@RG' | sed 's/.*SM:\([^\t]*\).*/\1/g' | uniq > $WORKING_DIR/sage_3_0/tumor_sample.txt

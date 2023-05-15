@@ -1,7 +1,7 @@
 #!/bin/bash
 mkdir $WORKING_DIR/cgppindel_3_9_0
 
-singularity exec -e $EXECUTABLE_DIR/cgppindel_3_9_0.sif sh -c "
+singularity exec -e $SINGULARITY_DIR/cgppindel_3_9_0.sif sh -c "
 pindel.pl \
      -simrep $EXTRA_DATA_DIR/cgppindel/simpleRepeats.bed.gz \
      -filter $EXTRA_DATA_DIR/cgppindel/genomicRules.lst \

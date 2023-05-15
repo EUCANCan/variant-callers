@@ -39,9 +39,9 @@ The scripts for running the variant callers are Bash scripts that can be execute
 
 All the scripts to execute the variant callers are located in the [`executable_scripts/`](executable_scripts/) folder of this repository. The scripts are named after the variant caller they execute and its version. For example, the script to execute MuSE v2.0 is located in [`executable_scripts/muse_2.0.sh`](executable_scripts/muse_2.0.sh).
 
-All scripts require the singularity image to be located in the `$EXECUTABLE_DIR` folder with the same name as the script but with the `.sif` extension. For example, the script [`executable_scripts/muse_2.0.sh`](executable_scripts/muse_2.0.sh) requires the singularity image to be located in `$EXECUTABLE_DIR/muse_2.0.sif`.
+All scripts require the singularity image to be located in the `$SINGULARITY_DIR` folder with the same name as the script but with the `.sif` extension. For example, the script [`executable_scripts/muse_2.0.sh`](executable_scripts/muse_2.0.sh) requires the singularity image to be located in `$SINGULARITY_DIR/muse_2.0.sif`.
 
-_Note: GRIDSS2 also requires a JAR file named `gripss_X_X.jar` to be located in the `$EXECUTABLE_DIR` folder._
+_Note: GRIDSS2 also requires a JAR file named `gripss_X_X.jar` to be located in the `$SINGULARITY_DIR` folder._
 
 ### Environment variables
 
@@ -50,7 +50,7 @@ All the scripts require the following environment variables to be set:
 ```bash
 $WORKING_DIR # path to working directory
 $OUTPUT_DIR # path to output directory
-$EXECUTABLE_DIR # path to the parent folder of the singularity image
+$SINGULARITY_DIR # path to the parent folder of the singularity image
 $EXTRA_DATA_DIR # path to extra data directory
 $REF_VERSION # reference version (i.e. 37)
 $NORMAL_SAMPLE # path to normal sample SAM/BAM/CRAM file
@@ -77,7 +77,7 @@ The following example shows how to execute any of the variant callers:
 ```bash
 export WORKING_DIR=/path/to/working/directory
 export OUTPUT_DIR=/path/to/output/directory
-export EXECUTABLE_DIR=./singularity_containers
+export SINGULARITY_DIR=./singularity_containers
 export EXTRA_DATA_DIR=./required_extra_data
 export REF_VERSION=37
 export NORMAL_SAMPLE=/path/to/normal/sample.bam

@@ -1,12 +1,12 @@
 #!/bin/bash
-# WARNING: It also requires gripss_2_2.jar to be in $EXECUTABLE_DIR
+# WARNING: It also requires gripss_2_2.jar to be in $SINGULARITY_DIR
 
 rm -rf $WORKING_DIR/gridss_2_13_2
 mkdir $WORKING_DIR/gridss_2_13_2
 
 JAVA_HEAP_SIZE=$MAX_MEMORY"G"
 
-singularity exec -e $EXECUTABLE_DIR/gridss_2_13_2.sif sh -c "
+singularity exec -e $SINGULARITY_DIR/gridss_2_13_2.sif sh -c "
 gridss -r $FASTA_REF \
   -o $WORKING_DIR/gridss_2_13_2/all.vcf --workingdir $WORKING_DIR/gridss_2_13_2 \
   -t $NUM_CORES \
@@ -20,8 +20,8 @@ grep '^#CHROM' $WORKING_DIR/gridss_2_13_2/all.vcf | cut -f 11 | sed 's/\t/\n/g' 
 
 # Run gripss
 JAVA_OPTS="-Xmx"$MAX_MEMORY"G"
-singularity exec -e $EXECUTABLE_DIR/gridss_2_13_2.sif sh -c "
-java ${JAVA_OPTS} -jar $EXECUTABLE_DIR/gripss_2_2.jar \
+singularity exec -e $SINGULARITY_DIR/gridss_2_13_2.sif sh -c "
+java ${JAVA_OPTS} -jar $SINGULARITY_DIR/gripss_2_2.jar \
   -sample $(cat $WORKING_DIR/gridss_2_13_2/tumor_sample.txt) \
   -reference $(cat $WORKING_DIR/gridss_2_13_2/normal_sample.txt) \
   -ref_genome_version $REF_VERSION \

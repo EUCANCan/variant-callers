@@ -3,7 +3,7 @@ mkdir $WORKING_DIR/cgpcavemanwrapper_1_16_0
 
 # WARNING: Requires cgppindel_3_9_0.sh to be run first in order to read $OUTPUT_DIR/cgppindel_3_9_0.germline.bed.gz
 
-singularity exec -e $EXECUTABLE_DIR/cgpcavemanwrapper_1_16_0.sif sh -c "
+singularity exec -e $SINGULARITY_DIR/cgpcavemanwrapper_1_16_0.sif sh -c "
 caveman.pl \
      -ig $EXTRA_DATA_DIR/cgpcavemanwrapper/HiDepth.tsv \
      -tc $EXTRA_DATA_DIR/cgpcavemanwrapper/empty.cn.bed -td 5 \

@@ -2,7 +2,7 @@
 rm -rf $WORKING_DIR/manta_1_6_0
 mkdir $WORKING_DIR/manta_1_6_0
 
-singularity exec -e $EXECUTABLE_DIR/manta_1_6_0.sif sh -c "
+singularity exec -e $SINGULARITY_DIR/manta_1_6_0.sif sh -c "
 /manta-1.6.0.centos6_x86_64/bin/configManta.py --normalBam=$NORMAL_SAMPLE --tumorBam=$TUMOR_SAMPLE --referenceFasta=$FASTA_REF --runDir=$WORKING_DIR/manta_1_6_0
 $WORKING_DIR/manta_1_6_0/runWorkflow.py -j $NUM_CORES
 "

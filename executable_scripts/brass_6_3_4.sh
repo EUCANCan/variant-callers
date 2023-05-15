@@ -12,7 +12,7 @@ if [ -f $TUMOR_SAMPLE.bas ]; then
     ln -s $TUMOR_SAMPLE.bas $WORKING_DIR/brass_6_3_4/tumor.bam.bas
 fi
 
-singularity exec -e $EXECUTABLE_DIR/brass_6_3_4.sif bash -c "
+singularity exec -e $SINGULARITY_DIR/brass_6_3_4.sif bash -c "
 # Create the .bam.bas files if they do not exist
 if [ ! -f $WORKING_DIR/brass_6_3_4/normal.bam.bas ]; then
     bam_stats -@ $NUM_CORES -i $WORKING_DIR/brass_6_3_4/normal.bam -o $WORKING_DIR/brass_6_3_4/normal.bam.bas
