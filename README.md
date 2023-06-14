@@ -2,9 +2,11 @@
 
 This repository contains the scripts to run the variant callers used in PLATFORM NAME. The variant callers are executed from Bash scripts that use Singularity containers (sometimes it might be necessary to convert the Docker containers to Singularity containers, see [Useful information](#useful-information)). The scripts are located in the [`executable_scripts/`](executable_scripts/) folder of this repository.
 
+The scripts for running the variant callers are Bash scripts that can be executed directly from the command line in almost any Unix-based system. The only dependency is Singularity ([`singularity-ce`](https://sylabs.io/singularity/) version +3.9.0).
+
 The containers references are available in the [variant caller list](#variant-callers-list) below. Some of the containers recipies are available in this repository, while others are available in external repositories. For the latter, the link to the repository is provided.
 
-The scripts for running the variant callers are Bash scripts that can be executed directly from the command line in almost any Unix-based system. The only dependency is Singularity ([`singularity-ce`](https://sylabs.io/singularity/) version +3.9.0).
+**WARNING: While running Singularity images does not require root privileges, creating a Singularity image does. For this reason, it is recommended that you build the containers outside of the production environment and load them later.**
 
 ## Table of Contents<!-- omit in toc -->
 - [Variant callers list](#variant-callers-list)
@@ -92,6 +94,8 @@ bash ./executable_scripts/variant_caller_X_X_X.sh
 
 ## Useful information
 
+While running Singularity images does not require root privileges, creating a Singularity image does. For this reason, it is recommended that you build the containers outside of the production environment and load them later.
+
 ### Building a Singularity image from a recipe
 
 To build a Singularity image from a recipe, you can use the following command (it requires root privileges):
@@ -102,7 +106,7 @@ sudo singularity build <image_name>.sif <recipe_file>
 
 ### Building a Docker image from a Dockerfile in a repository
 
-To build a Docker image from a Dockerfile in a repository, you can use the following command:
+To build a Docker image from a Dockerfile in a repository, you can use the following command (it requires root privileges):
 
 ```bash
 git clone <repository_url>
@@ -112,13 +116,13 @@ docker build -t <image_name>:<image_tag> .
 
 #### Converting a Docker image to a Singularity image
 
-To convert a Docker image to a Singularity image, you first must save the Docker image to a file:
+To convert a Docker image to a Singularity image (it requires root privileges), you first must save the Docker image to a file:
 
 ```bash
 docker save <image_name>:<image_tag> > <image_name>_<image_tag>.tar
 ```
 
-Then, you can convert the Docker image to a Singularity image:
+Then, you can convert the Docker image to a Singularity image (it requires root privileges):
 
 ```bash
 singularity build <image_name>_<image_tag>.sif docker-archive://<image_name>_<image_tag>.tar
