@@ -4,9 +4,6 @@
 
 mkdir $WORKING_DIR/shimmer
 
-# exit when any command fails
-set -e
-
 # Run in parallel
 singularity exec -e $SINGULARITY_DIR/shimmer.sif bash -c "
 set -e
@@ -19,10 +16,10 @@ else
 fi
 '
 
-for chrom in $(cut -f1 $FASTA_REF.fai)
+for chrom in \$(cut -f1 $FASTA_REF.fai)
 do
-    bcftools view $WORKING_DIR/shimmer/partial_$chrom/somatic_diffs.vcf -O z -o $WORKING_DIR/shimmer/partial_$chrom/somatic_diffs.vcf.gz
-    bcftools index -f $WORKING_DIR/shimmer/partial_$chrom/somatic_diffs.vcf.gz
+    bcftools view $WORKING_DIR/shimmer/partial_\$chrom/somatic_diffs.vcf -O z -o $WORKING_DIR/shimmer/partial_\$chrom/somatic_diffs.vcf.gz
+    bcftools index -f $WORKING_DIR/shimmer/partial_\$chrom/somatic_diffs.vcf.gz
 done
 
 bcftools concat $WORKING_DIR/shimmer/partial_*/somatic_diffs.vcf.gz --threads $NUM_CORES -a -O z -o $WORKING_DIR/shimmer/shimmer.vcf.gz

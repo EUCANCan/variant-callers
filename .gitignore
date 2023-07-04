@@ -3,6 +3,8 @@ required_extra_data/brass/all_ncbi_bacteria.1.fa.2bit
 required_extra_data/brass/all_ncbi_bacteria.2.fa.2bit
 required_extra_data/brass/all_ncbi_bacteria.3.fa.2bit
 required_extra_data/brass/all_ncbi_bacteria.4.fa.2bit
+required_extra_data/brass/37/Homo_sapiens.GRCh37.75.vagrent*
+required_extra_data/brass/37/Human.GRCh37.*
 required_extra_data/muse/37/dbSNP.gz
 required_extra_data/muse/37/dbSNP.gz.tbi
 required_extra_data/cgpcavemanwrapper/unmatched/unmatchedNormal.bed.gz

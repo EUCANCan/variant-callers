@@ -8,13 +8,10 @@ singularity exec -e $SINGULARITY_DIR/sage_3_0.sif bash -c "
 samtools view -H $NORMAL_SAMPLE | grep '^@RG' | sed 's/.*SM:\([^\t]*\).*/\1/g' | uniq > $WORKING_DIR/sage_3_0/normal_sample.txt
 samtools view -H $TUMOR_SAMPLE | grep '^@RG' | sed 's/.*SM:\([^\t]*\).*/\1/g' | uniq > $WORKING_DIR/sage_3_0/tumor_sample.txt
 
-# exit when any command fails
-set -e
-
 java ${JAVA_OPTS} -cp /sage_v3.0_rc3.jar com.hartwig.hmftools.sage.SageApplication \
     -threads $NUM_CORES \
-    -reference $(cat $WORKING_DIR/sage_3_0/normal_sample.txt) -reference_bam $NORMAL_SAMPLE \
-    -tumor $(cat $WORKING_DIR/sage_3_0/tumor_sample.txt) -tumor_bam $TUMOR_SAMPLE \
+    -reference \$(cat $WORKING_DIR/sage_3_0/normal_sample.txt) -reference_bam $NORMAL_SAMPLE \
+    -tumor \$(cat $WORKING_DIR/sage_3_0/tumor_sample.txt) -tumor_bam $TUMOR_SAMPLE \
     -ref_genome_version $REF_VERSION \
     -ref_genome $FASTA_REF \
     -hotspots $EXTRA_DATA_DIR/sage/KnownHotspots.somatic.37.vcf.gz \

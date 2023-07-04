@@ -1,7 +1,7 @@
 #!/bin/bash
 mkdir $WORKING_DIR/delly_1_1_6
 
-singularity exec -e $SINGULARITY_DIR/delly_1_1_6.sif sh -c "
+singularity exec -e $SINGULARITY_DIR/delly_1_1_6.sif bash -c "
 if [ -s  $WORKING_DIR/delly_1_1_6/delly_1_1_6_DEL.bcf.csi ]; then
     echo Skipping DEL
 else
