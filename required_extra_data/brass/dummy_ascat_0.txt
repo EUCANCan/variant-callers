@@ -1,4 +1,0 @@
-rho 0.75
-Ploidy 2.0
-GenderChr Y
-GenderChrFound Y
