@@ -6,7 +6,7 @@ The scripts for running the variant callers are Bash scripts that can be execute
 
 The containers references are available in the [variant caller list](#variant-callers-list) below. Some of the containers recipies are available in this repository, while others are available in external repositories. For the latter, the link to the repository is provided.
 
-**WARNING: While running Singularity images does not require root privileges, creating a Singularity image does. For this reason, it is recommended that you build the containers outside of the production environment and load them later.**
+**WARNING: While running Singularity containers does not require root privileges, creating a Singularity container does. For this reason, it is recommended that you build the containers outside of the production environment and load them later.**
 
 ## Table of Contents<!-- omit in toc -->
 - [Variant callers list](#variant-callers-list)
@@ -15,16 +15,16 @@ The containers references are available in the [variant caller list](#variant-ca
   - [Extra data](#extra-data)
   - [Example of execution](#example-of-execution)
 - [Useful information](#useful-information)
-  - [Building a Singularity image from a recipe](#building-a-singularity-image-from-a-recipe)
-  - [Building a Docker image from a Dockerfile in a repository](#building-a-docker-image-from-a-dockerfile-in-a-repository)
-    - [Converting a Docker image to a Singularity image](#converting-a-docker-image-to-a-singularity-image)
+  - [Converting a Docker container to a Singularity container](#converting-a-docker-container-to-a-singularity-container)
+  - [Building a Singularity container from a recipe](#building-a-singularity-container-from-a-recipe)
+  - [Building a Docker container from a Dockerfile in a repository](#building-a-docker-container-from-a-dockerfile-in-a-repository)
 
 
 ## Variant callers list
 
-| Variant caller                                                                                                                   | Variants called | Version             | Singularity/Docker image/recipe                                                                                                                                                                                                                                | Notes                                          |
+| Variant caller                                                                                                                   | Variants called | Version             | Singularity/Docker image                                                                                                                                                                                                                                       | Notes                                          |
 | -------------------------------------------------------------------------------------------------------------------------------- | --------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
-| [cgpCaVEManWrapper](https://github.com/cancerit/cgpCaVEManWrapper)                                                               | SNV             | 1.6.0               | [Dockerfile from repository](https://github.com/cancerit/cgpCaVEManWrapper/tree/1.16.0)                                                                                                                                                                        | Requires cgpPindel v3.9.0 to be executed first |
+| [cgpCaVEManWrapper](https://github.com/cancerit/cgpCaVEManWrapper)                                                               | SNV             | 1.6.0               | [Docker container](https://quay.io/wtsicgp/cgpcavemanwrapper:1.16.0)                                                                                                                                                                   | Requires cgpPindel v3.9.0 to be executed first |
 | [MuSE](https://github.com/wwylab/MuSE)                                                                                           | SNV             | 2.0                 | [Dockerfile from repository](https://github.com/wwylab/MuSE/tree/0c1be9aba1a9772fcab33dca49805f9ffaa3370c)                                                                                                                                                     | Does not work with CRAM files                  |
 | [Shimmer](https://github.com/nhansen/Shimmer)                                                                                    | SNV             |                     | [Singularity recipe (custom)](./container_recipies/shimmer.def)                                                                                                                                                                                                | Does not work with CRAM files                  |
 | [Mutect2 (from GATK)](https://gatk.broadinstitute.org/hc/en-us/articles/360037593851-Mutect2)                                    | SNV/Indel       | 4.2.6.1             | [Docker container](https://hub.docker.com/layers/broadinstitute/gatk/4.2.6.1/images/sha256-21c3cb43b7d11891ed4b63cc7274f20187f00387cfaa0433b3e7991b5be34dbe)                                                                                                   |                                                |
@@ -42,7 +42,7 @@ The containers references are available in the [variant caller list](#variant-ca
 
 All the scripts to execute the variant callers are located in the [`executable_scripts/`](executable_scripts/) folder of this repository. The scripts are named after the variant caller they execute and its version. For example, the script to execute MuSE v2.0 is located in [`executable_scripts/muse_2.0.sh`](executable_scripts/muse_2.0.sh).
 
-All scripts require the singularity image to be located in the `$SINGULARITY_DIR` folder with the same name as the script but with the `.sif` extension. For example, the script [`executable_scripts/muse_2.0.sh`](executable_scripts/muse_2.0.sh) requires the singularity image to be located in `$SINGULARITY_DIR/muse_2.0.sif`.
+All scripts require the singularity container to be located in the `$SINGULARITY_DIR` folder with the same name as the script but with the `.sif` extension. For example, the script [`executable_scripts/muse_2.0.sh`](executable_scripts/muse_2.0.sh) requires the singularity container to be located in `$SINGULARITY_DIR/muse_2.0.sif`.
 
 _Note: GRIDSS2 also requires a JAR file named `gripss_X_X.jar` to be located in the `$SINGULARITY_DIR` folder._
 
@@ -53,7 +53,7 @@ All the scripts require the following environment variables to be set:
 ```bash
 $WORKING_DIR # path to working directory
 $OUTPUT_DIR # path to output directory
-$SINGULARITY_DIR # path to the parent folder of the singularity image
+$SINGULARITY_DIR # path to the parent folder of the singularity container
 $EXTRA_DATA_DIR # path to extra data directory
 $REF_VERSION # reference version (i.e. 37)
 $NORMAL_SAMPLE # path to normal sample SAM/BAM/CRAM file
@@ -94,17 +94,31 @@ bash ./executable_scripts/variant_caller_X_X_X.sh
 
 ## Useful information
 
-While running Singularity images does not require root privileges, creating a Singularity image does. For this reason, it is recommended that you build the containers outside of the production environment and load them later.
+While running Singularity containers does not require root privileges, creating a Singularity container does. For this reason, it is recommended that you build the containers outside of the production environment and load them later.
 
-### Building a Singularity image from a recipe
+### Converting a Docker container to a Singularity container
 
-To build a Singularity image from a recipe, you can use the following command (it requires root privileges):
+To convert a Docker image to a Singularity container (it requires root privileges), you first must save the Docker image to a file:
+
+```bash
+docker save <image_name>:<image_tag> > <image_name>_<image_tag>.tar
+```
+
+Then, you can convert the Docker image to a Singularity container (it requires root privileges):
+
+```bash
+singularity build <image_name>_<image_tag>.sif docker-archive://<image_name>_<image_tag>.tar
+```
+
+### Building a Singularity container from a recipe
+
+To build a Singularity container from a recipe, you can use the following command (it requires root privileges):
 
 ```bash
 sudo singularity build <image_name>.sif <recipe_file>
 ```
 
-### Building a Docker image from a Dockerfile in a repository
+### Building a Docker container from a Dockerfile in a repository
 
 To build a Docker image from a Dockerfile in a repository, you can use the following command (it requires root privileges):
 
@@ -112,18 +126,4 @@ To build a Docker image from a Dockerfile in a repository, you can use the follo
 git clone <repository_url>
 cd <repository_name>
 docker build -t <image_name>:<image_tag> .
-```
-
-#### Converting a Docker image to a Singularity image
-
-To convert a Docker image to a Singularity image (it requires root privileges), you first must save the Docker image to a file:
-
-```bash
-docker save <image_name>:<image_tag> > <image_name>_<image_tag>.tar
-```
-
-Then, you can convert the Docker image to a Singularity image (it requires root privileges):
-
-```bash
-singularity build <image_name>_<image_tag>.sif docker-archive://<image_name>_<image_tag>.tar
 ```
