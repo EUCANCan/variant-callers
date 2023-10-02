@@ -9,7 +9,7 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get update && apt-get install -y git g++ zlib1g-dev cmake libbz2-dev liblzma-dev tabix bcftools
 
 git clone --recursive https://github.com/walaj/svaba
-cd svaba && git checkout e384f5c53913744d2baf822a199dc20ba0d0a4c6 && ./configure && make -j$(nproc) && make -j$(nproc) install
+cd svaba && git checkout e384f5c53913744d2baf822a199dc20ba0d0a4c6 && git submodule update --force && ./configure && make -j$(nproc) && make -j$(nproc) install
 
 %environment
     PATH=$PATH:/svaba/bin
