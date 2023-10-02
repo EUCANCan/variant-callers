@@ -1,0 +1,21 @@
+Bootstrap: docker
+From: ubuntu:20.04
+Stage: spython-base
+
+%post
+
+export DEBIAN_FRONTEND=noninteractive
+
+apt-get update && apt-get install -y git g++ cmake autoconf libtool liblzma-dev zlib1g-dev libbz2-dev libcurl3-dev libssl-dev
+
+git clone https://github.com/wwylab/MuSE
+cd MuSE && git checkout 0c1be9aba1a9772fcab33dca49805f9ffaa3370c && ./install_muse.sh
+mkdir /MuSE/bin
+cp /MuSE/MuSE /MuSE/bin
+
+%environment
+    PATH=$PATH:/MuSE/bin
+%runscript
+exec /bin/bash "$@"
+%startscript
+exec /bin/bash "$@"
