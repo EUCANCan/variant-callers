@@ -56,7 +56,7 @@ jobs:
             basename=$(basename $recipe | sed -E 's/[0-9_]+\.def//g' | sed -E 's/.def//g')
             # Get version tag from recipe name
             tag=$(basename $recipe | sed -E 's/[A-Za-z]+_([0-9_]+)\.def/\1/g' | sed -E 's/_/./g' | sed -E 's/.def//g')
-            if [ "$tag" == $(basename $recipe) ]; then
+            if [ "$tag" == $(basename $recipe | sed -E 's/.def//g') ]; then
                 tag=latest
             fi
             # Check if container exists
