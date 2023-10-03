@@ -73,4 +73,35 @@ jobs:
             url="oras://ghcr.io/${{ github.repository_owner }}/oncoliner_${basename}:${tag}"
             echo "Pushing container to $url"
             singularity push $basename.sif $url
+            rm $basename.sif
          done
+
+      - name: Convert Docker to Singularity containers
+        run: |
+          for url_file in $(find docker_urls -name "*.txt"); do
+            echo "Current URL file: $url_file"
+            # Get basename of recipe (without <version>.txt)
+            basename=$(basename $url_file | sed -E 's/[0-9_]+\.txt//g' | sed -E 's/.txt//g')
+            # Get version tag from recipe name
+            tag=$(basename $url_file | sed -E 's/[A-Za-z]+_([0-9_]+)\.txt/\1/g' | sed -E 's/_/./g' | sed -E 's/.txt//g')
+            if [ "$tag" == $(basename $url_file | sed -E 's/.txt//g') ]; then
+                tag=latest
+            fi
+            # Check if container exists
+            base64token=$(echo ${{ secrets.GITHUB_TOKEN }} | base64)
+            echo "Checking if container $basename:$tag already exists"
+            if curl -s -H "Authorization: Bearer $base64token" https://ghcr.io/v2/${{ github.repository_owner }}/oncoliner_${basename}/tags/list | grep $tag; then
+                echo "Container $basename:$tag already exists, skipping build"
+                continue
+            fi
+            echo "Container $basename:$tag does not exist, downloading it and building it"
+            # Get the url from the file
+            url=$(cat $url_file)
+            # Download container
+            sudo -E singularity pull $basename.sif docker://$url
+            # Push container and name by tag
+            url="oras://ghcr.io/${{ github.repository_owner }}/oncoliner_${basename}:${tag}"
+            echo "Pushing container to $url"
+            singularity push $basename.sif $url
+            rm $basename.sif
+          done

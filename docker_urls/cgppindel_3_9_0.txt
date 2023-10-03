@@ -1,0 +1,1 @@
+quay.io/wtsicgp/cgppindel:3.9.0

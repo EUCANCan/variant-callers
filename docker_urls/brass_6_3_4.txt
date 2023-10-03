@@ -1,0 +1,1 @@
+quay.io/wtsicgp/brass:v6.3.4
