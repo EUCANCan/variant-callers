@@ -2,18 +2,15 @@
 
 This repository contains the scripts to run the variant callers used in Oncoliner. The variant callers are executed from Bash scripts that use Singularity containers. The scripts are located in the [`executable_scripts/`](executable_scripts/) folder of this repository. The containers references are available in the [variant callers list](#variant-callers-list) below.
 
-The scripts for running the variant callers are Bash scripts that can be executed directly from the command line in almost any Unix-based system. The only dependency is Singularity ([`singularity-ce`](https://sylabs.io/singularity/) version +3.9.0).
+The scripts for running the variant callers are Bash scripts that can be executed directly from the command line in almost any Unix-based system. The only dependency is Singularity ([`singularity-ce`](https://sylabs.io/singularity/) version +3.9.0). The scripts are optimized for running in HPC environments without root privileges.
 
 ## Table of Contents<!-- omit in toc -->
 - [Variant callers list](#variant-callers-list)
+- [Downloading the variant callers](#downloading-the-variant-callers)
 - [Executing the variant callers](#executing-the-variant-callers)
   - [Environment variables](#environment-variables)
   - [Extra data](#extra-data)
   - [Example of execution](#example-of-execution)
-- [Useful information](#useful-information)
-  - [Converting a Docker container to a Singularity container](#converting-a-docker-container-to-a-singularity-container)
-  - [Building a Singularity container from a recipe](#building-a-singularity-container-from-a-recipe)
-  - [Building a Docker container from a Dockerfile in a repository](#building-a-docker-container-from-a-dockerfile-in-a-repository)
 
 
 ## Variant callers list
@@ -34,9 +31,19 @@ The scripts for running the variant callers are Bash scripts that can be execute
 | [Manta](https://github.com/Illumina/manta)                                                                                       | SV            | 1.6.0   | [`oncoliner_manta:1.6.0`](https://ghcr.io/eucancan/oncoliner_manta:1.6.0)                                                                                                              | [GPL-3.0](https://github.com/Illumina/manta/blob/master/LICENSE.txt)         |                                  |
 
 
+## Downloading the variant callers
+
+Downloading Singularity containers (using ORAS) does not require root privileges. For downloading any of the Singularity containers provided in this repository, you can use the following command:
+
+```
+singularity pull <variant_caller_name_version>.sif oras://ghcr.io/eucancan/<container_name:tag>
+```
+
+It is important that the container is named after the script that executes it. For example, the script [`executable_scripts/muse_2_0.sh`](executable_scripts/muse_2_0.sh) requires the singularity container to be named `muse_2_0.sif`.
+
 ## Executing the variant callers
 
-All the scripts to execute the variant callers are located in the [`executable_scripts/`](executable_scripts/) folder of this repository. The scripts are named after the variant caller they execute and its version. For example, the script to execute MuSE v2.0 is located in [`executable_scripts/muse_2.0.sh`](executable_scripts/muse_2.0.sh).
+Running Singularity containers does not require root privileges. All the scripts to execute the variant callers are located in the [`executable_scripts/`](executable_scripts/) folder of this repository. The scripts are named after the variant caller they execute and its version. For example, the script to execute MuSE v2.0 is located in [`executable_scripts/muse_2.0.sh`](executable_scripts/muse_2.0.sh).
 
 All scripts require the singularity container to be located in the `$SINGULARITY_DIR` folder with the same name as the script but with the `.sif` extension. For example, the script [`executable_scripts/muse_2.0.sh`](executable_scripts/muse_2.0.sh) requires the singularity container to be located in `$SINGULARITY_DIR/muse_2.0.sif`.
 
@@ -86,40 +93,4 @@ export NUM_CORES=8
 export MAX_MEMORY=32
 
 bash ./executable_scripts/variant_caller_X_X_X.sh
-```
-
-## Useful information
-
-While running Singularity containers does not require root privileges, creating a Singularity container does. For this reason, it is recommended that you build the containers outside of the production environment and upload them later.
-
-### Converting a Docker container to a Singularity container
-
-To convert a Docker image to a Singularity container (it requires root privileges), you first must save the Docker image to a file:
-
-```bash
-docker save <image_name>:<image_tag> > <image_name>_<image_tag>.tar
-```
-
-Then, you can convert the Docker image to a Singularity container (it requires root privileges):
-
-```bash
-singularity build <image_name>_<image_tag>.sif docker-archive://<image_name>_<image_tag>.tar
-```
-
-### Building a Singularity container from a recipe
-
-To build a Singularity container from a recipe, you can use the following command (it requires root privileges):
-
-```bash
-sudo singularity build <image_name>.sif <recipe_file>
-```
-
-### Building a Docker container from a Dockerfile in a repository
-
-To build a Docker image from a Dockerfile in a repository, you can use the following command (it requires root privileges):
-
-```bash
-git clone <repository_url>
-cd <repository_name>
-docker build -t <image_name>:<image_tag> .
 ```
