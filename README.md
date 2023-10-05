@@ -41,6 +41,12 @@ singularity pull <variant_caller_name_version>.sif oras://ghcr.io/eucancan/<cont
 
 It is important that the container is named after the script that executes it. For example, the script [`executable_scripts/muse_2_0.sh`](executable_scripts/muse_2_0.sh) requires the singularity container to be named `muse_2_0.sif`.
 
+**WARNING**. Your institution may not allow you to download files directly from computing nodes. If that is the case, you will need to download the container in a different machine and then copy it to the computing node. For example, you could download the container in your local machine and then copy it to the computing node using `scp`:
+
+```
+scp <variant_caller_name_version>.sif <username>@<hostname>:<path_to_singularity_containers_storage_dir>
+```
+
 ## Executing the variant callers
 
 Running Singularity containers does not require root privileges. All the scripts to execute the variant callers are located in the [`executable_scripts/`](executable_scripts/) folder of this repository. The scripts are named after the variant caller they execute and its version. For example, the script to execute MuSE v2.0 is located in [`executable_scripts/muse_2.0.sh`](executable_scripts/muse_2.0.sh).
