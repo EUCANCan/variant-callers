@@ -1,7 +1,22 @@
 #!/bin/bash
+# Check if the number of arguments is correct
+if [ $# -ne 9 ]; then
+    echo "ERROR: Wrong number of arguments"
+    echo "USAGE: brass_6_3_4.sh WORKING_DIR OUTPUT_DIR EXTRA_DATA_DIR REF_VERSION NORMAL_SAMPLE TUMOR_SAMPLE FASTA_REF NUM_CORES MAX_MEMORY"
+    exit 1
+fi
+WORKING_DIR=$1
+OUTPUT_DIR=$2
+EXTRA_DATA_DIR=$3
+REF_VERSION=$4
+NORMAL_SAMPLE=$5
+TUMOR_SAMPLE=$6
+FASTA_REF=$7
+NUM_CORES=$8
+MAX_MEMORY=$9
+
 mkdir $WORKING_DIR/delly_1_1_6
 
-singularity exec -e $SINGULARITY_DIR/delly_1_1_6.sif bash -c "
 if [ -s  $WORKING_DIR/delly_1_1_6/delly_1_1_6_DEL.bcf.csi ]; then
     echo Skipping DEL
 else
@@ -46,7 +61,6 @@ paste $WORKING_DIR/delly_1_1_6/normal_sample.txt <(echo $'control') > $WORKING_D
 paste $WORKING_DIR/delly_1_1_6/tumor_sample.txt <(echo $'tumor') >> $WORKING_DIR/delly_1_1_6/samples.tsv
 
 delly filter -f somatic -o $WORKING_DIR/delly_1_1_6/delly_1_1_6.bcf -s $WORKING_DIR/delly_1_1_6/samples.tsv $WORKING_DIR/delly_1_1_6/delly_1_1_6_unfiltered.bcf
-"
 
 cp $WORKING_DIR/delly_1_1_6/delly_1_1_6.bcf $OUTPUT_DIR/delly_1_1_6.bcf
 

@@ -1,7 +1,22 @@
 #!/bin/bash
+# Check if the number of arguments is correct
+if [ $# -ne 9 ]; then
+    echo "ERROR: Wrong number of arguments"
+    echo "USAGE: brass_6_3_4.sh WORKING_DIR OUTPUT_DIR EXTRA_DATA_DIR REF_VERSION NORMAL_SAMPLE TUMOR_SAMPLE FASTA_REF NUM_CORES MAX_MEMORY"
+    exit 1
+fi
+WORKING_DIR=$1
+OUTPUT_DIR=$2
+EXTRA_DATA_DIR=$3
+REF_VERSION=$4
+NORMAL_SAMPLE=$5
+TUMOR_SAMPLE=$6
+FASTA_REF=$7
+NUM_CORES=$8
+MAX_MEMORY=$9
+
 mkdir $WORKING_DIR/cgppindel_3_9_0
 
-singularity exec -e $SINGULARITY_DIR/cgppindel_3_9_0.sif sh -c "
 pindel.pl \
      -simrep $EXTRA_DATA_DIR/cgppindel/simpleRepeats.bed.gz \
      -filter $EXTRA_DATA_DIR/cgppindel/genomicRules.lst \
@@ -14,7 +29,6 @@ pindel.pl \
 
 bgzip -@ $NUM_CORES -c $WORKING_DIR/cgppindel_3_9_0/*.germline.bed > $WORKING_DIR/cgppindel_3_9_0/germline.bed.gz
 tabix -p bed $WORKING_DIR/cgppindel_3_9_0/germline.bed.gz
-"
 
 cp $WORKING_DIR/cgppindel_3_9_0/germline.bed.gz $OUTPUT_DIR/cgppindel_3_9_0.germline.bed.gz
 cp $WORKING_DIR/cgppindel_3_9_0/germline.bed.gz.tbi $OUTPUT_DIR/cgppindel_3_9_0.germline.bed.gz.tbi

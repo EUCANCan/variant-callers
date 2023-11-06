@@ -1,4 +1,20 @@
 #!/bin/bash
+# Check if the number of arguments is correct
+if [ $# -ne 9 ]; then
+    echo "ERROR: Wrong number of arguments"
+    echo "USAGE: brass_6_3_4.sh WORKING_DIR OUTPUT_DIR EXTRA_DATA_DIR REF_VERSION NORMAL_SAMPLE TUMOR_SAMPLE FASTA_REF NUM_CORES MAX_MEMORY"
+    exit 1
+fi
+WORKING_DIR=$1
+OUTPUT_DIR=$2
+EXTRA_DATA_DIR=$3
+REF_VERSION=$4
+NORMAL_SAMPLE=$5
+TUMOR_SAMPLE=$6
+FASTA_REF=$7
+NUM_CORES=$8
+MAX_MEMORY=$9
+
 mkdir $WORKING_DIR/brass_6_3_4
 
 # Link all NORMAL_SAMPLE TUMOR_SAMPLE files to the working directory
@@ -8,7 +24,8 @@ ln -s $TUMOR_SAMPLE* $WORKING_DIR/brass_6_3_4/
 LOCAL_NORMAL_SAMPLE=$WORKING_DIR/brass_6_3_4/$(basename $NORMAL_SAMPLE)
 LOCAL_TUMOR_SAMPLE=$WORKING_DIR/brass_6_3_4/$(basename $TUMOR_SAMPLE)
 
-singularity exec -e $SINGULARITY_DIR/brass_6_3_4.sif bash -c "
+set -e
+
 # Create the .bam.bas files if they do not exist
 if [ ! -f $LOCAL_NORMAL_SAMPLE.bas ]; then
     bam_stats -@ $NUM_CORES -i $LOCAL_NORMAL_SAMPLE -o $LOCAL_NORMAL_SAMPLE.bas
@@ -29,15 +46,12 @@ brass.pl -o $WORKING_DIR/brass_6_3_4/all.vcf \
  -species human -assembly $REF_VERSION -protocol WGS -pl Illumina \
  -normal $LOCAL_NORMAL_SAMPLE -tumour $LOCAL_TUMOR_SAMPLE \
  -g $FASTA_REF -c $NUM_CORES
-"
 
 # Copy the result
 cp $WORKING_DIR/brass_6_3_4/all.vcf/*.annot.vcf.gz $WORKING_DIR/brass_6_3_4/brass_6_3_4.vcf.gz
 
 # Add PASS to the entries
-singularity exec -e $SINGULARITY_DIR/brass_6_3_4.sif bash -c "
 zcat $WORKING_DIR/brass_6_3_4/brass_6_3_4.vcf.gz | sed 's/\t\.\tSVTYPE/\tPASS\tSVTYPE/g' | gzip > $OUTPUT_DIR/brass_6_3_4.vcf.gz
-"
 
 # If the output file does not exist or empty, exit with 1
 if [ ! -s $OUTPUT_DIR/brass_6_3_4.vcf.gz ]; then
