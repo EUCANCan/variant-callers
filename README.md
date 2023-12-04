@@ -1,6 +1,6 @@
-# Oncoliner - Variant callers<!-- omit in toc -->
+# ONCOLINER - Variant callers<!-- omit in toc -->
 
-This repository contains the scripts to run the variant callers used in Oncoliner. The variant callers are executed from Bash scripts that use Singularity containers. The scripts are located in the [`executable_scripts/`](executable_scripts/) folder of this repository. The containers references are available in the [variant callers list](#variant-callers-list) below.
+This repository contains the scripts to run the variant callers used originally in ONCOLINER. The variant callers are executed from Bash scripts that use Singularity containers. The scripts are located in the [`executable_scripts/`](executable_scripts/) folder of this repository. The containers references are available in the [variant callers list](#variant-callers-list) below.
 
 The scripts for running the variant callers are Bash scripts that can be executed directly from the command line in almost any Unix-based system. The only dependency is Singularity ([`singularity-ce`](https://sylabs.io/singularity/) version +3.9.0). The scripts are optimized for running in HPC environments without root privileges.
 
