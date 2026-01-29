@@ -1,3 +1,5 @@
+### WARNING: This repository is no longer maintained, go to [Computational-Genomics-BSC/somatic-variant-callers](https://github.com/Computational-Genomics-BSC/somatic-variant-callers) for the updated version.
+
 # ONCOLINER - Variant callers<!-- omit in toc -->
 
 R. Martín et al., “ONCOLINER: A new solution for monitoring, improving, and harmonizing somatic variant calling across genomic oncology centers,” _Cell Genomics_, vol. 4, no. 9. Elsevier BV, p. 100639, Sep. 2024. [doi: 10.1016/j.xgen.2024.100639](https://doi.org/10.1016/j.xgen.2024.100639)
